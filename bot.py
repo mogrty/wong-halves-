@@ -1,16 +1,6 @@
-# ==============================
-# 📦 Install required libraries
-# ==============================
-!pip install python-telegram-bot==13.15 requests
-
-# ==============================
-# 🐍 Telegram Meme Bot
-# ==============================
 import logging
 import requests
 import random
-import time
-
 from telegram.ext import Updater, CommandHandler
 
 # =======================
@@ -60,6 +50,19 @@ def send_meme(update, context):
 
 # =======================
 # MAIN
+# =======================
+def main():
+    updater = Updater(token=TELEGRAM_TOKEN, use_context=True)
+    dp = updater.dispatcher
+
+    dp.add_handler(CommandHandler("meme", send_meme))
+
+    print("🤖 Bot is running... Type /meme in Telegram to get memes!")
+    updater.start_polling()
+    updater.idle()
+
+if __name__ == "__main__":
+    main()# MAIN
 # =======================
 def main():
     updater = Updater(token=TELEGRAM_TOKEN, use_context=True)
