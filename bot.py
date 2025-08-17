@@ -66,6 +66,38 @@ def main():
     updater.idle()
 
 if __name__ == "__main__":
+    main()    except Exception as e:
+        logging.error(f"Error fetching meme: {e}")
+        return None, None
+
+
+def send_meme(update, context):
+    meme_url, title = get_random_meme()
+    if meme_url:
+        context.bot.send_photo(chat_id=update.effective_chat.id,
+                               photo=meme_url,
+                               caption=title)
+    else:
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text="Couldn't fetch meme, try again!")
+
+# =======================
+# MAIN
+# =======================
+def main():
+    if not TELEGRAM_TOKEN:
+        raise ValueError("TELEGRAM_TOKEN environment variable not set!")
+    
+    updater = Updater(token=TELEGRAM_TOKEN, use_context=True)
+    dp = updater.dispatcher
+
+    dp.add_handler(CommandHandler("meme", send_meme))
+
+    print("🤖 Bot is running... Type /meme in Telegram to get memes!")
+    updater.start_polling()
+    updater.idle()
+
+if __name__ == "__main__":
     main()        logging.error(f"Error fetching meme: {e}")
         return None, None
 
